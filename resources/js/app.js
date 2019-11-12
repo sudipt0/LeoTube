@@ -9,6 +9,7 @@ require('./bootstrap');
 window.Vue = require('vue');
 
 require('./components/subscribe-button');
+require('./components/channel-uploads');
 
 /**
  * The following block of code may be used to automatically register your
