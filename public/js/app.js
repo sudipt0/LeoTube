@@ -50525,13 +50525,42 @@ __webpack_require__.r(__webpack_exports__);
 /***/ (function(module, exports) {
 
 Vue.component('channel-uploads', {
+  props: {
+    channel: {
+      type: Object,
+      required: true,
+      "default": function _default() {
+        return {};
+      }
+    }
+  },
   data: function data() {
     return {
-      selected: false
+      selected: false,
+      videos: [],
+      progress: {}
     };
   },
   methods: {
-    upload: function upload() {}
+    upload: function upload() {
+      var _this = this;
+
+      this.selected = true;
+      this.videos = Array.from(this.$refs.videos.files);
+      var uloaders = this.videos.map(function (video) {
+        var form = new FormData();
+        _this.progress[video.name] = 0;
+        form.append('video', video);
+        form.append('title', video.name);
+        return axios.post("/channels/".concat(_this.channel.id, "/videos"), form, {
+          onUploadProgress: function onUploadProgress(event) {
+            _this.progress[video.name] = Math.ceil(event.loaded / event.total * 100); //this is used to update the progess data in real time to get in the view
+
+            _this.$forceUpdate();
+          }
+        });
+      });
+    }
   }
 });
 
