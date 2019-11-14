@@ -34,9 +34,9 @@ use Illuminate\Foundation\Bus\Dispatchable;
     public function handle()
     {
         $veryLowBitrate = (new X264('aac'))->setKiloBitrate(100); //320p
-        $lowBitrate = (new X264('aac'))->setKiloBitrate(250 ); 
-        $midBitrate = (new X264('aac'))->setKiloBitrate(500); 
-        $highBitrate = (new X264('aac'))->setKiloBitrate(1000); 
+        $lowBitrate = (new X264('aac'))->setKiloBitrate(250);
+        // $midBitrate = (new X264('aac'))->setKiloBitrate(500);
+        // $highBitrate = (new X264('aac'))->setKiloBitrate(1000);
 
         FFMpeg::fromDisk('local')
             ->open($this->video->path)
@@ -48,8 +48,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
             })
             ->addFormat($veryLowBitrate)
             ->addFormat($lowBitrate)
-            ->addFormat($midBitrate)
-            ->addFormat($highBitrate)
+            // ->addFormat($midBitrate)
+            // ->addFormat($highBitrate)
             ->save("public/videos/{$this->video->id}/{$this->video->id}.m3u8");
     }
 }
