@@ -50375,6 +50375,7 @@ module.exports = function(module) {
 __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 window.Vue = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.common.js");
+Vue.config.ignoredElements = ['video-js'];
 
 __webpack_require__(/*! ./components/subscribe-button */ "./resources/js/components/subscribe-button.js");
 
@@ -50524,6 +50525,14 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports) {
 
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance"); }
+
+function _iterableToArray(iter) { if (Symbol.iterator in Object(iter) || Object.prototype.toString.call(iter) === "[object Arguments]") return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = new Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } }
+
 Vue.component('channel-uploads', {
   props: {
     channel: {
@@ -50538,7 +50547,9 @@ Vue.component('channel-uploads', {
     return {
       selected: false,
       videos: [],
-      progress: {}
+      progress: {},
+      uploads: [],
+      intervals: {}
     };
   },
   methods: {
@@ -50547,17 +50558,43 @@ Vue.component('channel-uploads', {
 
       this.selected = true;
       this.videos = Array.from(this.$refs.videos.files);
-      var uloaders = this.videos.map(function (video) {
+      var uploaders = this.videos.map(function (video) {
         var form = new FormData();
         _this.progress[video.name] = 0;
         form.append('video', video);
         form.append('title', video.name);
         return axios.post("/channels/".concat(_this.channel.id, "/videos"), form, {
           onUploadProgress: function onUploadProgress(event) {
-            _this.progress[video.name] = Math.ceil(event.loaded / event.total * 100); //this is used to update the progess data in real time to get in the view
+            _this.progress[video.name] = Math.ceil(event.loaded / event.total * 100);
 
             _this.$forceUpdate();
           }
+        }).then(function (_ref) {
+          var data = _ref.data;
+          _this.uploads = [].concat(_toConsumableArray(_this.uploads), [data]);
+        });
+      });
+      axios.all(uploaders).then(function () {
+        _this.videos = _this.uploads;
+
+        _this.videos.forEach(function (video) {
+          _this.intervals[video.id] = setInterval(function () {
+            axios.get("/videos/".concat(video.id)).then(function (_ref2) {
+              var data = _ref2.data;
+
+              if (data.percentage === 100) {
+                clearInterval(_this.intervals[video.id]);
+              }
+
+              _this.videos = _this.videos.map(function (v) {
+                if (v.id === data.id) {
+                  return data;
+                }
+
+                return v;
+              });
+            });
+          }, 3000);
         });
       });
     }

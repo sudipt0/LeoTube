@@ -12,7 +12,7 @@
 */
 
 use App\Http\Controllers\UploadVideoController;
-
+use App\Http\Controllers\VideoController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -25,6 +25,10 @@ Route::get('/home', 'HomeController@index')->name('home');
     Route::resource('channels', 'ChannelController');
 }); */
 Route::resource('channels', 'ChannelController');
+
+Route::get('/videos/{video}', [VideoController::class, 'show']);
+
+Route::put('videos/{video}', [VideoController::class, 'updateViews']);
 
 Route::group(['middleware' => ['auth']], function () {
 

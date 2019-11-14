@@ -36,7 +36,7 @@ class CreateVideoThumbnail implements ShouldQueue
     {
         FFMpeg::fromDisk('local')
             ->open($this->video->path)
-            ->getFrameFromSeconds(10)
+            ->getFrameFromSeconds(random_int(10, 50))
             ->export()
             ->toDisk('local')
             ->save("public/thumbnails/{$this->video->id}.png");

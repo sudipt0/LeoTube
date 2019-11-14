@@ -9,29 +9,61 @@ Vue.component('channel-uploads', {
     data: () => ({
         selected: false,
         videos: [],
-        progress: {}
+        progress: {},
+        uploads: [],
+        intervals: {}
     }),
+
     methods: {
-        upload () {
+        upload() {
             this.selected = true
             this.videos = Array.from(this.$refs.videos.files)
 
-            const uloaders = this.videos.map(video => {
+            const uploaders = this.videos.map(video => {
                 const form = new FormData()
+
                 this.progress[video.name] = 0
 
-                form.append('video',video)
+                form.append('video', video)
                 form.append('title', video.name)
 
                 return axios.post(`/channels/${this.channel.id}/videos`, form, {
                     onUploadProgress: (event) => {
-                        this.progress[video.name] = Math.ceil((event.loaded / event.total) * 100 )
-                        
-                        //this is used to update the progess data in real time to get in the view
+                        this.progress[video.name] = Math.ceil((event.loaded / event.total) * 100)
+
                         this.$forceUpdate()
                     }
+                }).then(({ data }) => {
+                    this.uploads = [
+                        ...this.uploads,
+                        data
+                    ]
                 })
             })
+
+            axios.all(uploaders)
+                .then(() => {
+                    this.videos = this.uploads
+
+                    this.videos.forEach(video => {
+                        this.intervals[video.id] = setInterval(() => {
+                            axios.get(`/videos/${video.id}`).then(({ data }) => {
+
+                                if (data.percentage === 100) {
+                                    clearInterval(this.intervals[video.id])
+                                }
+                                
+                                this.videos = this.videos.map(v => {
+                                    if (v.id === data.id) {
+                                        return data
+                                    }
+
+                                    return v
+                                })
+                            })
+                        }, 3000)
+                    })
+                })
         }
     }
 })
