@@ -2,7 +2,7 @@
     <div class="card mt-5 p-5">
         <div v-if="auth" class="form-inline my-4 w-full">
                 <input v-model="newComment" type="text" class="form-control form-control-sm w-80">
-                <button @click="addComment" class="btn btn-sm btn-primary">
+                <button @click="addComment" class="btn btn-sm btn-primary m-2">
                     <small>Add comment</small>
                 </button>
         </div>
@@ -13,7 +13,7 @@
             <button v-if="comments.next_page_url" @click="fetchComments" class="btn btn-success">
                 Load More
             </button>
-            <span v-else>No more comments to show :)</span>
+            <span v-else>No more comments to show 😕</span>
         </div>
     </div>
 </template>

@@ -38940,7 +38940,7 @@ var render = function() {
             _c(
               "button",
               {
-                staticClass: "btn btn-sm btn-primary",
+                staticClass: "btn btn-sm btn-primary m-2",
                 on: { click: _vm.addComment }
               },
               [_c("small", [_vm._v("Add comment")])]
@@ -38965,7 +38965,7 @@ var render = function() {
               },
               [_vm._v("\n            Load More\n        ")]
             )
-          : _c("span", [_vm._v("No more comments to show :)")])
+          : _c("span", [_vm._v("No more comments to show 😕")])
       ])
     ],
     2
@@ -51938,8 +51938,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! /Users/cispl-sudipta/laravel/LeoTube/resources/js/app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! /Users/cispl-sudipta/laravel/LeoTube/resources/sass/app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! /Users/sudiptakumarmondal/laravel/leotube/resources/js/app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! /Users/sudiptakumarmondal/laravel/leotube/resources/sass/app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

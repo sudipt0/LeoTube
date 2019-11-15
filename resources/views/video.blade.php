@@ -13,54 +13,55 @@
 
                     <div class="card-header">{{ $video->title }}</div>
 
-                    <div class="card-body">
+                    <div class="card-body p-0">
                         <video-js id="video" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="268">
                             <source src='{{ asset(Storage::url("videos/{$video->id}/{$video->id}.m3u8")) }}' type="application/x-mpegURL">
                         </video-js>
+                        <div class="p-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <h4 class="mt-3">
+                                        @if($video->editable())
+                                            <input type="text" class="form-control" value="{{ $video->title }}" name="title">
+                                        @else
+                                            {{ $video->title }}
+                                        @endif
+                                    </h4>
+                                    {{ $video->views }} {{ str_plural('view', $video->views) }}
+                                </div>
 
-                        <div class="d-flex justify-content-between align-items-center">
+                                <votes :default_votes='{{ $video->votes }}' entity_id="{{ $video->id }}" entity_owner="{{ $video->channel->user_id }}"> </votes>
+                            </div>
+
+                            <hr>
+
                             <div>
-                                <h4 class="mt-3">
-                                    @if($video->editable())
-                                        <input type="text" class="form-control" value="{{ $video->title }}" name="title">
-                                    @else
-                                        {{ $video->title }}
-                                    @endif
-                                </h4>
-                                {{ $video->views }} {{ str_plural('view', $video->views) }}
+                                @if($video->editable())
+                                    <textarea name="description" cols="3" rows="3" class="form-control">{{ $video->description }}</textarea>
+
+                                    <div class="text-right mt-4">
+                                            <button class="btn btn-info btn-sm" type="submit">Update video details</button>
+                                    </div>
+                                @else
+                                    {{ $video->description }}
+                                @endif
                             </div>
 
-                            <votes :default_votes='{{ $video->votes }}' entity_id="{{ $video->id }}" entity_owner="{{ $video->channel->user_id }}"> </votes>
-                        </div>
+                            <hr>
 
-                        <hr>
-
-                        <div>
-                            @if($video->editable())
-                                <textarea name="description" cols="3" rows="3" class="form-control">{{ $video->description }}</textarea>
-
-                                <div class="text-right mt-4">
-                                        <button class="btn btn-info btn-sm" type="submit">Update video details</button>
+                            <div class="d-flex justify-content-between align-items-center mt-5">
+                                <div class="media">
+                                    <img class="rounded-circle" src="https://picsum.photos/id/42/200/200" width="50" height="50" class="mr-3" alt="...">
+                                    <div class="media-body ml-2">
+                                        <h5 class="mt-0 mb-0">
+                                            {{ $video->channel->name }}
+                                        </h5>
+                                        <span class="small">Published on {{ $video->created_at->toFormattedDateString() }}</span>
+                                    </div>
                                 </div>
-                            @else
-                                {{ $video->description }}
-                            @endif
-                        </div>
 
-                        <hr>
-
-                        <div class="d-flex justify-content-between align-items-center mt-5">
-                            <div class="media">
-                                <img class="rounded-circle" src="https://picsum.photos/id/42/200/200" width="50" height="50" class="mr-3" alt="...">
-                                <div class="media-body ml-2">
-                                    <h5 class="mt-0 mb-0">
-                                        {{ $video->channel->name }}
-                                    </h5>
-                                    <span class="small">Published on {{ $video->created_at->toFormattedDateString() }}</span>
-                                </div>
+                                <subscribe-button :channel="{{ $video->channel }}" :initial-subscriptions="{{ $video->channel->subscriptions }}" />
                             </div>
-
-                            <subscribe-button :channel="{{ $video->channel }}" :initial-subscriptions="{{ $video->channel->subscriptions }}" />
                         </div>
                     </div>
                 @if($video->editable())
