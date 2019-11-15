@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+
 use App\Video;
 use Illuminate\Http\Request;
+use App\Http\Requests\Videos\UpdateVideoRequest;
 
 class VideoController extends Controller
 {
@@ -16,8 +18,12 @@ class VideoController extends Controller
     }
     public function updateViews(Video $video)
     {
-        $video->increment('views');
+        $video->increment('views'); //views column of the video tahble
         return response()->json([]);
+    }
+    public function update(UpdateVideoRequest $request,  Video $video) {
+        $video->update($request->only(['title', 'description']));
+        return redirect()->back();
     }
 
 }

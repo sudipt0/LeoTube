@@ -8,10 +8,13 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-Vue.config.ignoredElements = ['video-js'];
+Vue.config.ignoredElements = ['video-js']
 
-require('./components/subscribe-button');
-require('./components/channel-uploads');
+Vue.component('votes', require('./components/votes.vue').default)
+Vue.component('comments', require('./components/comments.vue').default)
+Vue.component('subscribe-button', require('./components/subscribe-button.vue').default)
+
+require('./components/channel-uploads')
 
 /**
  * The following block of code may be used to automatically register your
