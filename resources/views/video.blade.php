@@ -77,7 +77,8 @@
 @endsection
 
 @section('styles')
-    <link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet">
+    <!-- <link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet"> -->
+    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
     <style>
         .vjs-default-skin {
             width: 100%;
@@ -110,8 +111,13 @@
 @endsection
 
 @section('scripts')
-<script src="https://vjs.zencdn.net/7.5.5/video.js"></script>
+<!-- <script src="https://vjs.zencdn.net/7.5.5/video.js"></script> -->
+
+<script src="https://unpkg.com/video.js/dist/video.min.js"></script>
 <script src="{{ asset('js/videojs/videojs.hotkeys.min.js') }}"></script>
+<script src="https://unpkg.com/videojs-flash/dist/videojs-flash.min.js"></script>
+<script src="https://unpkg.com/videojs-contrib-quality-levels/dist/videojs-contrib-quality-levels.min.js"></script>
+<script src="https://unpkg.com/videojs-contrib-hls/dist/videojs-contrib-hls.min.js"></script>
 
     <script>
         window.CURRENT_VIDEO = '{{ $video->id }}'
