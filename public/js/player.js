@@ -8,13 +8,15 @@ const player = videojs('video', {
     },
     html5: {
         hls: {
-        overrideNative: true
+            smoothQualityChange: true,
+            overrideNative: true
         }
     }
 });
+// player.hlsQualitySelector();
 
 
-
+//log view count
 var viewLogged = false
 
 player.on('timeupdate', function () {

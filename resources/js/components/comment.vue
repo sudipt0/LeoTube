@@ -19,7 +19,7 @@
 
             <div v-if="addingReply" class="form-inline my-4 w-full">
                 <input v-model='body' type="text" class="form-control form-control-sm w-80">
-                <button @click="addReply" class="btn btn-sm btn-primary">
+                <button @click="addReply" class="btn btn-sm btn-primary m-2">
                     <small>Add reply</small>
                 </button>
             </div>

@@ -11,8 +11,10 @@
 |
 */
 
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\UploadVideoController;
 use App\Http\Controllers\VideoController;
+use App\Http\Controllers\VoteController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,11 +35,10 @@ Route::get('comments/{comment}/replies', [CommentController::class, 'show']);
 Route::put('videos/{video}/update', [VideoController::class, 'update'])->middleware(['auth'])->name('videos.update');
 
 Route::group(['middleware' => ['auth']], function () {
-
+    Route::post('comments/{video}', [CommentController::class, 'store']);
     Route::post('channels/{channel}/videos', [UploadVideoController::class, 'store']) ;
-
+    Route::post('votes/{entityId}/{type}', [VoteController::class, 'vote']);
     Route::get('channels/{channel}/videos', [UploadVideoController::class, 'index'])->name('channel.upload');
-
     Route::resource('channels/{channel}/subscriptions', 'SubscriptionController')->only(['store', 'destroy']);
 });
 

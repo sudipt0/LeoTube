@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+
+use App\Channel;
+use App\Video;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -23,7 +26,26 @@ class HomeController extends Controller
      */
     public function index()
     {
-        return view('home');
+        $query = request()->search;
+
+        $suggestedVideos = collect();
+        $videos = collect();
+        $channels = collect();
+         
+        if($query){
+            $videos = Video::where('title', 'LIKE', "%{$query}%")->orWhere('description', 'LIKE', "%{$query}%")->paginate(1); 
+            $channels = Channel::where('name', 'LIKE', "%{$query}%")->orWhere('description', 'LIKE', "%{$query}%")->paginate(1, ['*'],'channel_page');
+        }else{
+            $suggestedVideos = Video::paginate(12);
+            // dd($suggestedVideos);
+        }
+        
+        return view('home')->with([
+            'suggestedVideos' => $suggestedVideos,
+            'videos' => $videos,
+            'channels' => $channels
+            
+        ]);
     }
 }
 

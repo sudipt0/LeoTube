@@ -49,7 +49,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
             ->addFormat($veryLowBitrate)
             ->addFormat($lowBitrate)
             ->addFormat($midBitrate)
-            // ->addFormat($highBitrate)
+            ->addFormat($highBitrate)
             ->save("public/videos/{$this->video->id}/{$this->video->id}.m3u8");
     }
 }

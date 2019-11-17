@@ -38871,7 +38871,7 @@ var render = function() {
                 _c(
                   "button",
                   {
-                    staticClass: "btn btn-sm btn-primary",
+                    staticClass: "btn btn-sm btn-primary m-2",
                     on: { click: _vm.addReply }
                   },
                   [_c("small", [_vm._v("Add reply")])]
@@ -38925,7 +38925,7 @@ var render = function() {
                 }
               ],
               staticClass: "form-control form-control-sm w-80",
-              attrs: { type: "text" },
+              attrs: { type: "text", placeholder: "Enter your comment." },
               domProps: { value: _vm.newComment },
               on: {
                 input: function($event) {
