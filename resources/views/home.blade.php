@@ -18,6 +18,7 @@
                     </form>
                 </div>
             </div>
+            
             @if($suggestedVideos->count() !== 0)
                 <div class="card">
                     <div class="card-body">
