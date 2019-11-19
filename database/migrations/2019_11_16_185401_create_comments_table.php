@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateVotesTable extends Migration
+class CreateCommentsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateVotesTable extends Migration
      */
     public function up()
     {
-        Schema::create('votes', function (Blueprint $table) {
+        Schema::create('comments', function (Blueprint $table) {
             $table->uuid('id');
-            $table->enum('type', ['up', 'down'])->default('up');
-            $table->string('voteable_type');
-            $table->uuid('voteable_id');
             $table->uuid('user_id');
+            $table->uuid('video_id');
+            $table->text('body');
+            $table->uuid ('comment_id')->nullable();
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateVotesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('votes');
+        Schema::dropIfExists('comments');
     }
 }

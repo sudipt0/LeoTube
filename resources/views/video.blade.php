@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-12">
             <div class="card">
                 @if($video->editable())
                     <form action="{{ route('videos.update', $video->id) }}" method="POST">
@@ -14,7 +14,8 @@
                     <div class="card-header">{{ $video->title }}</div>
 
                     <div class="card-body p-0">
-                        <video-js id="video" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="268">
+                        <video-js id="video" class="vjs-default-skin vjs-big-play-centered" controls preload="auto" width="640" height="300"
+                        poster="{{ asset(Storage::url("thumbnails/{$video->id}.png")) }}">
                             <source src='{{ asset(Storage::url("videos/{$video->id}/{$video->id}.m3u8")) }}' type="application/x-mpegURL">
                         </video-js>
                         <div class="p-3">
@@ -77,8 +78,7 @@
 @endsection
 
 @section('styles')
-    <!-- <link href="https://vjs.zencdn.net/7.5.5/video-js.css" rel="stylesheet"> -->
-    <link href="https://unpkg.com/video.js/dist/video-js.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/video.js/dist/video-js.css" rel="stylesheet">
     <style>
         .vjs-default-skin {
             width: 100%;
@@ -86,6 +86,7 @@
         #video *{
             outline: none;
         }
+
         .thumbs-up, .thumbs-down {
             width: 20px;
             height: 20px;
@@ -98,15 +99,24 @@
         .thumbs-down {
             margin-left: 1rem;
         }
-    </style>
-
-    <style>
         .w-full {
             width: 100% !important;
         }
         .w-80 {
             width: 80% !important;
         }
+        .video-js .vjs-big-play-button {
+            border: none;
+        }
+
+        .vjs-big-play-button {
+            background-color: #B37D5B;
+            opacity: .6;
+            border: none;
+            border-radius: 50%;
+        }
+
+
     </style>
 @endsection
 

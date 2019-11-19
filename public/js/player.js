@@ -8,8 +8,8 @@ const player = videojs('video', {
     },
     html5: {
         hls: {
-        overrideNative: true,
-        enableLowInitialPlaylist:true
+            smoothQualityChange: true,
+            overrideNative: true
         }
     },
     flash:{
@@ -79,9 +79,9 @@ $("body").on("click", ".quality_ul li", function() {
         qualityLevels[i].enabled = (val == "auto" || (val != "auto" && qualityLevels[i].height == val));
     }
 });
+// player.hlsQualitySelector();
 
         // player.qualityPickerPlugin();
-
 
 
 //log view count

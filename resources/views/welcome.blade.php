@@ -1,100 +1,120 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+@extends('layouts.app')
 
-        <title>LeoTube</title>
+@section('content')
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-12">
+            <div class="card">
 
-        <!-- Fonts -->
-        <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
+                        </div>
+                    @endif
+                    <form action="">
+                        <input type="text" name="search" class="form-control" placeholder="Search videos and channels">
+                    </form>
+                </div>
+            </div>
 
-        <!-- Styles -->
-        <style>
-            html, body {
-                background-color: #fff;
-                color: #636b6f;
-                font-family: 'Nunito', sans-serif;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
+            @if($suggestedVideos->count() !== 0)
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center text-lg-left">
+                            @foreach($suggestedVideos as $video)
+                                <div class="col-lg-3 col-md-4 col-6">
+                                    <a href="{{ route('videos.show', $video->id) }}" class="d-block">
+                                    <img class="img-fluid img-thumbnail" src="{{ asset($video->thumbnail) }}" alt="{{ $video->title }}">
+                                    </a>
+                                    <div class="row mt-2">
+                                        <!-- <div class="col-3">
+                                            <img class="img-fluid rounded-circle" src="{{ asset($video->thumbnail) }}" alt="{{ $video->title }}">
+                                        </div> -->
+                                        <div class="col-9">
+                                            <h5>{{ $video->title}}</h5>
+                                            <p class="float-left">{{ App\Http\Controllers\HomeController::number_format_short($video->views) }} {{ str_plural('view', $video->views) }}</p>
+                                            <p class="float-right">{{ \Carbon\Carbon::parse($video->created_at)->diffForHumans() }}</p>
+                                        </div>
+                                    </div>
 
-            .full-height {
-                height: 100vh;
-            }
+                                </div>
+                            @endforeach
 
-            .flex-center {
-                align-items: center;
-                display: flex;
-                justify-content: center;
-            }
+                        </div>
+                        <div class="row justify-content-center">
+                                {{ $suggestedVideos->appends(request()->query())->links() }}
+                            </div>
 
-            .position-ref {
-                position: relative;
-            }
+                    </div>
+                </div>
+            @endif
+            @if($channels->count() !== 0)
+                <div class="card mt-5">
+                    <div class="card-header">
+                        Channels
+                    </div>
 
-            .top-right {
-                position: absolute;
-                right: 10px;
-                top: 18px;
-            }
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <th>Name</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                @foreach($channels as $channel)
+                                    <tr>
+                                        <td>
+                                            {{ $channel->name }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('channels.show', $channel->id) }}" class="btn btn-sm btn-info">View Channel</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
 
-            .content {
-                text-align: center;
-            }
-
-            .title {
-                font-size: 84px;
-            }
-
-            .links > a {
-                color: #636b6f;
-                padding: 0 25px;
-                font-size: 13px;
-                font-weight: 600;
-                letter-spacing: .1rem;
-                text-decoration: none;
-                text-transform: uppercase;
-            }
-
-            .m-b-md {
-                margin-bottom: 30px;
-            }
-        </style>
-    </head>
-    <body>
-        <div class="flex-center position-ref full-height">
-            @if (Route::has('login'))
-                <div class="top-right links">
-                    @auth
-                        <a href="{{ url('/home') }}">Home</a>
-                    @else
-                        <a href="{{ route('login') }}">Login</a>
-
-                        @if (Route::has('register'))
-                            <a href="{{ route('register') }}">Register</a>
-                        @endif
-                    @endauth
+                        <div class="row justify-content-center">
+                            {{ $channels->appends(request()->query())->links() }}
+                        </div>
+                    </div>
                 </div>
             @endif
 
-            <div class="content">
-                <div class="title m-b-md">
-                    Laravel
-                </div>
+            @if($videos->count() !== 0)
+                <div class="card mt-5">
+                    <div class="card-header">
+                        Videos
+                    </div>
 
-                <div class="links">
-                    <a href="https://laravel.com/docs">Docs</a>
-                    <a href="https://laracasts.com">Laracasts</a>
-                    <a href="https://laravel-news.com">News</a>
-                    <a href="https://blog.laravel.com">Blog</a>
-                    <a href="https://nova.laravel.com">Nova</a>
-                    <a href="https://forge.laravel.com">Forge</a>
-                    <a href="https://vapor.laravel.com">Vapor</a>
-                    <a href="https://github.com/laravel/laravel">GitHub</a>
+                    <div class="card-body">
+                        <table class="table">
+                            <thead>
+                                <th>Name</th>
+                                <th></th>
+                            </thead>
+                            <tbody>
+                                @foreach($videos as $video)
+                                    <tr>
+                                        <td>
+                                            {{ $video->title }}
+                                        </td>
+                                        <td>
+                                            <a href="{{ route('videos.show', $video->id) }}" class="btn btn-sm btn-info">View Video</a>
+                                        </td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+
+                        <div class="row justify-content-center">
+                            {{ $videos->appends(request()->query())->links() }}
+                        </div>
+                    </div>
                 </div>
-            </div>
+            @endif
         </div>
-    </body>
-</html>
+    </div>
+</div>
+@endsection

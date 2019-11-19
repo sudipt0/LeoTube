@@ -1,7 +1,7 @@
 <template>
     <div class="card mt-5 p-5">
         <div v-if="auth" class="form-inline my-4 w-full">
-                <input v-model="newComment" type="text" class="form-control form-control-sm w-80">
+                <input v-model="newComment" type="text" class="form-control form-control-sm w-80" placeholder="Enter your comment.">
                 <button @click="addComment" class="btn btn-sm btn-primary m-2">
                     <small>Add comment</small>
                 </button>

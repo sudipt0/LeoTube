@@ -2,30 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
 use App\Channel;
 use App\Video;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class IndexController extends Controller
 {
-    /**
-     * Create a new controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
-
-    /**
-     * Show the application dashboard.
-     *
-     * @return \Illuminate\Contracts\Support\Renderable
-     */
-    public function index()
-    {
+    public function index(){
         $query = request()->search;
 
         $suggestedVideos = collect();
@@ -40,7 +23,7 @@ class HomeController extends Controller
             // dd($suggestedVideos);
         }
 
-        return view('home')->with([
+        return view('welcome')->with([
             'suggestedVideos' => $suggestedVideos,
             'videos' => $videos,
             'channels' => $channels
